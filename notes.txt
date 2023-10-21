@@ -1,0 +1,181 @@
+The useEffect hook in React is used for performing side effects in your 
+functional components. Side effects are operations that affect something 
+outside the component, like data fetching, manually changing the DOM, or 
+setting up subscriptions. 
+
+============================ When to use 'useEffect' ============================
+Data Fetching: 
+When you need to fetch data from an API or other external sources. It ensures 
+you don't make a request on every render, only when specific dependencies change.
+
+DOM Manipulation: 
+When you need to manipulate the DOM directly.
+
+Subscriptions: 
+When you want to subscribe to external events, such as listening to WebSocket 
+messages.
+
+Clean-up: 
+When you need to perform clean-up when the component unmounts.
+
+========================= When you don't need 'useEffect' ========================
+State Calculations: 
+If you're just calculating something based on the component's state during 
+rendering, you don't need useEffect.
+
+Event Handling: 
+For simple event handling like button clicks, you can use event handlers directly 
+within your component without useEffect.
+
+State Reset: 
+If you're resetting state based on a condition, you usually don't need useEffect.
+
+Shared State: 
+If you need to share state among multiple components, just lift state up.
+
+====================================== Syntax ===================================
+useEffect(() => {
+  // This runs after every render
+});
+
+useEffect(() => {
+  // This runs only on mount (when the component appears)
+}, []);
+
+useEffect(() => {
+  // This runs on mount *and also* if either a or b have changed since the 
+  // last render
+}, [a, b]);
+
+useEffect(
+  () => {
+    // execute side effect
+    return () => {
+      // cleanup function on unmounting or re-running effect
+    }
+  },
+  // optional dependency array
+  [/* 0 or more entries */]
+)
+
+=============================== Mounting and unmounting =========================
+Mounting:
+Mounting is the process of a component being created and inserted into the DOM. 
+It happens when you first render a component.
+
+Unmounting:
+Unmounting is the process of removing a component from the DOM. It happens when 
+a component is no longer needed or is replaced by a different component.
+
+In simple terms, think of "mounting" as putting a component on the stage for a 
+performance (making it visible), and "unmounting" as taking that component off 
+the stage when the performance is over (making it invisible and freeing up 
+resources).
+
+========================= How to think about 'useEffect' =========================
+useEffect(() => {
+    // Your Effect connected to the room specified with roomId...
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      // ...until it disconnected
+      connection.disconnect();
+    };
+}, [roomId]);
+
+1. Your Effect connected to the "general" room (until it disconnected)
+2. Your Effect connected to the "travel" room (until it disconnected)
+3. Your Effect connected to the "music" room (until it disconnected)
+
+Always focus on a single start/stop cycle at a time. It shouldn’t matter whether 
+a component is mounting, updating, or unmounting. All you need to do is to 
+describe how to start synchronization and how to stop it. If you do it well, your 
+Effect will be resilient to being started and stopped as many times as it’s needed.
+
+When changes in code occur:
+In development, React always remounts each component once. React verifies that 
+your Effect can re-synchronize by forcing it to do that immediately in development.
+After this has happened, synchronization will work as usual. 
+
+How react knows that it need's to re-synchronize the effect:
+function ChatRoom({ roomId }) { // The roomId prop may change over time
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId); // This Effect reads roomId 
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+  }, [roomId]); // So you tell React that this Effect "depends on" roomId, and re
+     // -synchronization will happen when roomID changes. 
+}
+
+Each Effect in your code should represent a separate and independent 
+synchronization process.
+
+Reactive values only (e.g., values that change over time ) must be included in 
+dependencies.
+
+Effects with empty dependencies: 
+const serverUrl = 'https://localhost:1234';
+const roomId = 'general';
+
+function ChatRoom() {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+  }, []); // ✅ All dependencies declared, so not
+  // ...
+}
+
+Now your Effect’s code does not use any reactive values, so its dependencies 
+can be empty ([]).
+
+All variables declared in the component body are reactive:
+All values inside the component (including props, state, and variables in your 
+component’s body) are reactive. Any reactive value can change on a re-render, 
+o you need to include reactive values as Effect’s dependencies.
+
+function ChatRoom({ roomId, selectedServerUrl }) { // roomId is reactive
+  const settings = useContext(SettingsContext); // settings is reactive
+  // serverUrl is reactive
+  const serverUrl = selectedServerUrl ?? settings.defaultServerUrl; 
+  useEffect(() => {
+    // Your Effect reads roomId and serverUrl
+    const connection = createConnection(serverUrl, roomId); 
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+    // So it needs to re-synchronize when either of them changes!
+  }, [roomId, serverUrl]); 
+  // ...
+}
+
+Make sure to configure linter for react. It will check that every reactive value 
+used by your Effect’s code is declared as its dependency. Avoid suppressing the 
+linter. Fix the problem instead. 
+
+What to do when you don’t want to re-synchronize:
+1. For example, if serverUrl and roomId don’t depend on rendering and always have 
+   the same values, you can move them outside the component. Now they don’t need 
+   to be dependencies
+2. You can also move them inside the Effect. They aren’t calculated during 
+   rendering, so they’re not reactive.
+
+If you run into problems:
+Check that your Effect represents an independent synchronization process. If your 
+Effect doesn’t synchronize anything, it might be unnecessary. If it synchronizes 
+several independent things, split it up.
+
+If you want to read the latest value of props or state without “reacting” to it 
+and re-synchronizing the Effect, you can split your Effect into a reactive part 
+(which you’ll keep in the Effect) and a non-reactive part (which you’ll extract 
+into something called an Effect Event). 
+
+Avoid relying on objects and functions as dependencies. If you create objects and 
+functions during rendering and then read them from an Effect, they will be 
+different on every render. This will cause your Effect to re-synchronize every 
+time. 

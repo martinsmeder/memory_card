@@ -1,0 +1,28 @@
+Components:
+* Header: Heading, game description, currentScore, bestScore
+* Main: A grid of clickable cards 
+
+Functionality: 
+* Get card contents (images and names) from external API
+* Generate random cards when clicking on each card
+* Keep increasing currentScore as long as the same card is not clicked twice, 
+  otherwise reset currentScore
+* Update bestScore after first round, and then each time currentScore is higher 
+  than bestScore the next time a card is clicked twice 
+* Keep track on how many times each item in the array has been clicked, when 
+  click > 1, reset currentScore
+
+Todo:
+* ---
+* Build static UI
+* Function to fetch and parse data 
+* Function to generate random images on card click 
+* Logic to keep track on card/item clicks 
+* Logic to update currentScore 
+* Logic to reset currentScore on first double click 
+* Logic to update bestScore on first double click 
+* Logic to update bestScore on double click when currentScore > bestScore
+
+Api:
+https://unsplash.com/developers
+* Rate limit of 50 requests per hour, so only fetch once and then store in array 
