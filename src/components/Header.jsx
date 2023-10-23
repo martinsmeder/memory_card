@@ -2,7 +2,7 @@ export default function Header() {
   return (
     <header>
       <div className='div left'>
-        <h1>Memory Game</h1>
+        <h1>How's Your Memory?</h1>
         <p>
           Get points by clicking on an image, but don't click on any image more
           than once!

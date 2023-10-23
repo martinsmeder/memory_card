@@ -14,8 +14,10 @@ Functionality:
 
 Todo:
 * ---
-* Build static UI
+* ---
+* ---
 * Function to fetch and parse data 
+https://www.pexels.com/api/documentation/?language=javascript
 * Function to generate random images on card click 
 * Logic to keep track on card/item clicks 
 * Logic to update currentScore 
