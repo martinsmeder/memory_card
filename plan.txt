@@ -16,15 +16,13 @@ Todo:
 * ---
 * ---
 * ---
-* Function to fetch and parse data 
-https://www.pexels.com/api/documentation/?language=javascript
-* Function to generate random images on card click 
-* Logic to keep track on card/item clicks 
+* ---
+* Remove duplication
+* Render 6 first items 
+* Render 6 random items for each click 
+* Increase click property for each click 
 * Logic to update currentScore 
-* Logic to reset currentScore on first double click 
+* Logic to reset currentScore and photo properties (state) on first double click 
 * Logic to update bestScore on first double click 
 * Logic to update bestScore on double click when currentScore > bestScore
-
-Api:
-https://unsplash.com/developers
-* Rate limit of 50 requests per hour, so only fetch once and then store in array 
+* Style and finish project 

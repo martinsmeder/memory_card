@@ -1,15 +1,34 @@
-// console.log(import.meta.env.VITE_API_KEY);
+import { createClient } from 'pexels';
 
-const apiKey = import.meta.env.VITE_API_KEY;
+// https://www.pexels.com/api/documentation/?language=javascript
 
-// import { createClient } from 'pexels';
+function parse(arr) {
+  return arr.map((photo) => {
+    return {
+      title: photo.alt,
+      image: photo.src.large,
+      clicks: 0,
+    };
+  });
+}
 
-// const client = createClient(apiKey);
+function removeDuplicates(arr) {
+  const titles = [];
+  return arr.filter((item) => {
+    if (!titles.includes(item.title)) {
+      titles.push(item.title);
+      return true;
+    }
+    return false;
+  });
+}
 
-// export default function fetchPhotos() {
-//   const query = 'Nature';
+export default function getPhotos(query, orientation) {
+  const apiKey = import.meta.env.VITE_API_KEY;
+  const client = createClient(apiKey);
 
-//   client.photos
-//     .search({ query, per_page: 3 })
-//     .then((photos) => console.log(photos));
-// }
+  return client.photos
+    .search({ query, orientation, per_page: 50 })
+    .then((response) => parse(response.photos))
+    .then((parsed) => removeDuplicates(parsed));
+}
