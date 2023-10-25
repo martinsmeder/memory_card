@@ -17,10 +17,10 @@ Todo:
 * ---
 * ---
 * ---
-* Remove duplication
-* Render 6 first items 
-* Render 6 random items for each click 
-* Increase click property for each click 
+* ---
+* ---
+* ---
+* ---
 * Logic to update currentScore 
 * Logic to reset currentScore and photo properties (state) on first double click 
 * Logic to update bestScore on first double click 

@@ -1,12 +1,12 @@
-export default function Main() {
+export default function Main({ array, clickHandler }) {
   return (
     <main>
-      <div id='one'>One</div>
-      <div id='two'>Two</div>
-      <div id='three'>Three</div>
-      <div id='four'>Four</div>
-      <div id='five'>Five</div>
-      <div id='six'>Six</div>
+      {array.map((item) => (
+        // Wrap clickHandler in arrow function to pass item object
+        <div key={item.title} onClick={() => clickHandler(item)}>
+          <img src={item.image} alt={item.title} />
+        </div>
+      ))}
     </main>
   );
 }
