@@ -4,22 +4,42 @@ import Footer from './Footer';
 import Header from './Header';
 import Main from './Main';
 import getPhotos from './api';
-import { getRandomPhotos, updateClicks } from './utils';
+import {
+  getRandomPhotos,
+  updateClicks,
+  resetAllClicks,
+  isNotClickedTwice,
+  isNotClicked,
+} from './utils';
 
 function App() {
   const [allPhotos, setAllPhotos] = useState([]);
   const [renderedPhotos, setRenderedPhotos] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
 
   useEffect(() => {
-    getPhotos('cars', 'portrait').then((photos) => setAllPhotos(photos));
+    getPhotos('cars', 'portrait').then((photos) => {
+      setAllPhotos(photos);
+    });
   }, []);
 
   useEffect(() => {
     if (allPhotos.length > 0) {
       const randomPhotos = getRandomPhotos(allPhotos);
       setRenderedPhotos(randomPhotos);
+      updateCurrentScore(); // Add to useEffect to update currentScore in real time
     }
   }, [allPhotos]);
+
+  function updateCurrentScore() {
+    if (allPhotos.every(isNotClicked)) return;
+    if (allPhotos.every(isNotClickedTwice)) setCurrentScore(currentScore + 1);
+    else {
+      setCurrentScore(0);
+      const resetAllPhotos = resetAllClicks(allPhotos);
+      setAllPhotos(resetAllPhotos);
+    }
+  }
 
   function handleClick(item) {
     const randomPhotos = getRandomPhotos(allPhotos);
@@ -30,7 +50,8 @@ function App() {
 
   return (
     <>
-      <Header />
+      {console.log(currentScore)}
+      <Header currentScore={currentScore} />
       <Main array={renderedPhotos} clickHandler={handleClick} />
       <Footer />
     </>

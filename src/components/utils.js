@@ -8,10 +8,23 @@ export function getRandomPhotos(arr) {
   return randomPhotos;
 }
 
-export function updateClicks(array, item) {
+export function updateClicks(arr, item) {
   const itemCopy = { ...item, clicks: item.clicks + 1 };
   console.log(itemCopy);
-  return array.map((photo) =>
+  return arr.map((photo) =>
     photo.title === itemCopy.title ? itemCopy : photo
   );
+}
+
+export function resetAllClicks(arr) {
+  // Copy the original objects to prevent mutating them, which will cause a crash
+  return arr.map((item) => ({ ...item, clicks: 0 }));
+}
+
+export function isNotClickedTwice(item) {
+  return item.clicks < 2;
+}
+
+export function isNotClicked(item) {
+  return item.clicks < 1;
 }
