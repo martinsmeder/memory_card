@@ -1,4 +1,4 @@
-export default function Header({ currentScore }) {
+export default function Header({ currentScore, bestScore }) {
   return (
     <header>
       <div className='div left'>
@@ -10,7 +10,7 @@ export default function Header({ currentScore }) {
       </div>
       <div className='div right'>
         <h3 className='counter current'>Current score: {currentScore}</h3>
-        <h3 className='counter total'>Best score: 0</h3>
+        <h3 className='counter total'>Best score: {bestScore}</h3>
       </div>
     </header>
   );

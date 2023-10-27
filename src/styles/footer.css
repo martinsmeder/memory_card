@@ -3,7 +3,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 2px solid #000;
+    border-top: 1px solid #FFF;
     padding: 15px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -11,10 +11,16 @@ footer {
 
 footer a {
     text-decoration: none;
-    color: #000;
+    color: #FFF;
 }
 
 footer a:hover {
     text-decoration: underline;
 }
 
+@media (max-width: 400px) {
+    footer {
+        text-align: center;
+        font-size: 1rem;
+    }
+}

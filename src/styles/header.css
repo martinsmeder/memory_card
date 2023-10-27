@@ -3,16 +3,17 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 10px;
-    border-bottom: 2px solid #000;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #FFF;
 }
 
 .div.left {
-    width: 60%;
+    width: 70%;
 }
 
 .div.right {
-    padding-top: 10px;
+    padding-top: 15px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -21,5 +22,35 @@ header {
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 2.7rem;
 }
+
+@media (min-width: 1200px) {
+  .div.left {
+    width: auto;
+  } 
+ }
+
+@media (max-width: 620px) {
+   header {
+    flex-direction: column;
+   }
+
+   .div.left {
+    width: 95%;
+    text-align: center;
+   }
+
+   .div.right {
+    align-items: center;
+    font-size: 1rem;
+   }
+}
+
+@media (max-width: 300px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+   
+ }

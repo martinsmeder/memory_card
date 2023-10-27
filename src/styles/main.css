@@ -1,8 +1,9 @@
 main {
+    max-width: 1200px;
     flex-grow: 1; 
     width: 90%;
     display: grid;
-    gap: 20px;
+    gap: 30px;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 }
@@ -12,11 +13,44 @@ main div {
     justify-content: center;
     align-items: center;
     background: #000;
-    border: 1px solid #000;
 }
 
 main div img {
     max-width: 100%; 
     max-height: 100%; 
     object-fit: contain; 
+    border: 1px solid #FFF;
+    border-radius: 20px;
+    transition: all .3s ease-out;
+}
+
+main div img:hover {
+    box-shadow: 0 0 .9rem #FFF;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    main {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    main div img {
+        max-width: 90%;
+        max-height: 90%;
+    }
+}
+
+@media (max-width: 500px) {
+    main div img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+@media (max-width: 300px) {
+   main div img {
+    border-radius: 5px;
+   }
 }

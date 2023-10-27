@@ -16,9 +16,10 @@ function App() {
   const [allPhotos, setAllPhotos] = useState([]);
   const [renderedPhotos, setRenderedPhotos] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
 
   useEffect(() => {
-    getPhotos('cars', 'portrait').then((photos) => {
+    getPhotos('cars', 'landscape').then((photos) => {
       setAllPhotos(photos);
     });
   }, []);
@@ -27,14 +28,15 @@ function App() {
     if (allPhotos.length > 0) {
       const randomPhotos = getRandomPhotos(allPhotos);
       setRenderedPhotos(randomPhotos);
-      updateCurrentScore(); // Add to useEffect to update currentScore in real time
+      updateScore(); // Add to useEffect to update state in real time
     }
   }, [allPhotos]);
 
-  function updateCurrentScore() {
+  function updateScore() {
     if (allPhotos.every(isNotClicked)) return;
     if (allPhotos.every(isNotClickedTwice)) setCurrentScore(currentScore + 1);
     else {
+      if (currentScore > bestScore) setBestScore(currentScore);
       setCurrentScore(0);
       const resetAllPhotos = resetAllClicks(allPhotos);
       setAllPhotos(resetAllPhotos);
@@ -50,8 +52,7 @@ function App() {
 
   return (
     <>
-      {console.log(currentScore)}
-      <Header currentScore={currentScore} />
+      <Header currentScore={currentScore} bestScore={bestScore} />
       <Main array={renderedPhotos} clickHandler={handleClick} />
       <Footer />
     </>
