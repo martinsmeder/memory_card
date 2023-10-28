@@ -22,7 +22,7 @@ function removeDuplicates(arr) {
 }
 
 export default function getPhotos(query, orientation) {
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = 'vJLwQWKyEUXijSGq9mdr0doBLdNVLV5VWkjarRO4stbszvCtcwvuIzX9';
   const client = createClient(apiKey);
 
   return client.photos
