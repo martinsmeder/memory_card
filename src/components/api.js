@@ -1,14 +1,14 @@
 // import { createClient } from 'pexels';
 
-// function parse(arr) {
-//   return arr.map((photo) => {
-//     return {
-//       title: photo.alt,
-//       image: photo.src.large,
-//       clicks: 0,
-//     };
-//   });
-// }
+function parse(arr) {
+  return arr.map((image) => {
+    return {
+      id: image.id,
+      image: image.webformatURL,
+      clicks: 0,
+    };
+  });
+}
 
 // function removeDuplicates(arr) {
 //   const titles = [];
@@ -31,15 +31,16 @@
 //     .then((parsed) => removeDuplicates(parsed));
 // }
 
-export default function getImages(numberOfImages, width, height) {
-  const images = [];
+export default function getImages() {
+  const url = 'https://pixabay.com/api/';
+  const apiKey = '40327956-473659aa65f45e8ac7c0071df';
+  const q = 'cars';
+  const orientation = 'horizontal';
+  const perPage = 50;
 
-  for (let i = 0; i < numberOfImages; i++) {
-    // Generate a URL for a random image with the specified width and height
-    const imageUrl = `https://picsum.photos/${width}/${height}?random=${i}`;
-
-    images.push({ title: `Image ${i + 1}`, image: imageUrl, clicks: 0 });
-  }
-
-  return images;
+  return fetch(
+    `${url}?key=${apiKey}&q=${q}&orientation=${orientation}&per_page=${perPage}`
+  )
+    .then((response) => response.json())
+    .then((images) => parse(images.hits));
 }

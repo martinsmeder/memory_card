@@ -1,78 +1,60 @@
 import { useState, useEffect } from 'react';
 
-// import Footer from './Footer';
-// import Header from './Header';
-// import Main from './Main';
+import Footer from './Footer';
+import Header from './Header';
+import Main from './Main';
 import getImages from './api';
-// import {
-//   getRandomPhotos,
-//   updateClicks,
-//   resetAllClicks,
-//   isNotClickedTwice,
-//   isNotClicked,
-// } from './utils';
+import {
+  getRandomPhotos,
+  updateClicks,
+  resetAllClicks,
+  isNotClickedTwice,
+  isNotClicked,
+} from './utils';
 
 function App() {
   const [allPhotos, setAllPhotos] = useState([]);
-  // const [renderedPhotos, setRenderedPhotos] = useState([]);
-  // const [currentScore, setCurrentScore] = useState(0);
-  // const [bestScore, setBestScore] = useState(0);
+  const [renderedPhotos, setRenderedPhotos] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
 
   useEffect(() => {
-    const randomImages = getImages(6, 200, 300);
-    setAllPhotos(randomImages);
+    getImages().then((photos) => {
+      setAllPhotos(photos);
+    });
   }, []);
 
-  console.log(allPhotos);
-  // useEffect(() => {
-  //   getPhotos('cars', 'landscape').then((photos) => {
-  //     setAllPhotos(photos);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (allPhotos.length > 0) {
+      const randomPhotos = getRandomPhotos(allPhotos);
+      setRenderedPhotos(randomPhotos);
+      updateScore(); // Add to useEffect to update state in real time
+    }
+  }, [allPhotos]);
 
-  // useEffect(() => {
-  //   if (allPhotos.length > 0) {
-  //     const randomPhotos = getRandomPhotos(allPhotos);
-  //     setRenderedPhotos(randomPhotos);
-  //     updateScore(); // Add to useEffect to update state in real time
-  //   }
-  // }, [allPhotos]);
+  function updateScore() {
+    if (allPhotos.every(isNotClicked)) return;
+    if (allPhotos.every(isNotClickedTwice)) setCurrentScore(currentScore + 1);
+    else {
+      if (currentScore > bestScore) setBestScore(currentScore);
+      setCurrentScore(0);
+      const resetAllPhotos = resetAllClicks(allPhotos);
+      setAllPhotos(resetAllPhotos);
+    }
+  }
 
-  // function updateScore() {
-  //   if (allPhotos.every(isNotClicked)) return;
-  //   if (allPhotos.every(isNotClickedTwice)) setCurrentScore(currentScore + 1);
-  //   else {
-  //     if (currentScore > bestScore) setBestScore(currentScore);
-  //     setCurrentScore(0);
-  //     const resetAllPhotos = resetAllClicks(allPhotos);
-  //     setAllPhotos(resetAllPhotos);
-  //   }
-  // }
-
-  // function handleClick(item) {
-  //   const randomPhotos = getRandomPhotos(allPhotos);
-  //   setRenderedPhotos(randomPhotos);
-  //   const updatedAllPhotos = updateClicks(allPhotos, item);
-  //   setAllPhotos(updatedAllPhotos);
-  // }
+  function handleClick(item) {
+    const randomPhotos = getRandomPhotos(allPhotos);
+    setRenderedPhotos(randomPhotos);
+    const updatedAllPhotos = updateClicks(allPhotos, item);
+    setAllPhotos(updatedAllPhotos);
+  }
 
   return (
     <>
-      {/* <Header currentScore={currentScore} bestScore={bestScore} />
+      <Header currentScore={currentScore} bestScore={bestScore} />
       <Main array={renderedPhotos} clickHandler={handleClick} />
-      <Footer /> */}
-      <main>
-        {allPhotos.map((item) => (
-          <div key={item.title}>
-            <img
-              src={item.image}
-              alt={item.title}
-              // Wrap clickHandler in arrow function to pass item object correctly
-              // onClick={() => clickHandler(item)}
-            />
-          </div>
-        ))}
-      </main>
+      <Footer />
     </>
   );
 }
