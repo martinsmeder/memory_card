@@ -10,9 +10,7 @@ export function getRandomPhotos(arr) {
 
 export function updateClicks(arr, item) {
   const itemCopy = { ...item, clicks: item.clicks + 1 };
-  return arr.map((photo) =>
-    photo.title === itemCopy.title ? itemCopy : photo
-  );
+  return arr.map((photo) => (photo.id === itemCopy.id ? itemCopy : photo));
 }
 
 export function resetAllClicks(arr) {

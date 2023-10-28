@@ -19,7 +19,7 @@ function App() {
   const [bestScore, setBestScore] = useState(0);
 
   useEffect(() => {
-    getImages().then((photos) => {
+    getImages('car', 'horizontal').then((photos) => {
       setAllPhotos(photos);
     });
   }, []);
@@ -44,6 +44,7 @@ function App() {
   }
 
   function handleClick(item) {
+    console.log(item);
     const randomPhotos = getRandomPhotos(allPhotos);
     setRenderedPhotos(randomPhotos);
     const updatedAllPhotos = updateClicks(allPhotos, item);
