@@ -2,4 +2,4 @@
 
 Live demo: https://memory-card-cyan.vercel.app/
 
-A simple Memory Card game built with React, powered by Pixabay API.
+A simple Memory Card game built with React and powered by Pixabay API.
