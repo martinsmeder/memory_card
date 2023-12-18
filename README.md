@@ -2,12 +2,4 @@
 
 Live demo: https://memory-card-cyan.vercel.app/
 
-A simple Memory Card game built with React.
-
-Some things I've learned:
-
-- How to handle side effects in React
-- How to use useEffect() for asynchronous operations
-- How to use useEffect() for managing state
-- How to avoid crashes with immutability and deep copies
-- How to correctly pass objects to eventHandlers
+A simple Memory Card game built with React, powered by Pixabay API.
